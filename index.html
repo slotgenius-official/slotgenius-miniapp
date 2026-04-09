@@ -46,6 +46,21 @@
             letter-spacing: 1px;
         }
         .header p { color: var(--text-sec); font-size: 14px; }
+        .hot-signal {
+            background: linear-gradient(90deg, #ff0000, #ff6600);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+        .hot-signal .title { font-size: 14px; color: white; margin-bottom: 5px; }
+        .hot-signal .countdown { font-size: 24px; font-weight: bold; color: white; }
+        .hot-signal .subtitle { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 5px; }
         .stats-bar {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -125,7 +140,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loader-text { color: var(--text-sec); font-size: 14px; animation: pulse 1.5s ease infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .generate-btn {
             width: 100%;
             background: var(--gradient);
@@ -153,6 +167,13 @@
             <h1>🎰 SlotGenius AI</h1>
             <p>ИИ анализ игровых автоматов</p>
         </div>
+        
+        <div class="hot-signal">
+            <div class="title">🔥 ГОРЯЧИЙ СИГНАЛ</div>
+            <div class="countdown" id="countdown">05:00</div>
+            <div class="subtitle">до следующего прогноза</div>
+        </div>
+        
         <div class="stats-bar">
             <div class="stat-card">
                 <div class="stat-value" id="todayWins">₽142,500</div>
@@ -163,6 +184,7 @@
                 <div class="stat-label">Точность сигналов</div>
             </div>
         </div>
+        
         <div class="signal-card" id="signalCard">
             <div class="slot-header">
                 <div class="slot-icon" id="slotIcon">🎰</div>
@@ -190,22 +212,28 @@
                 </div>
             </div>
         </div>
+        
         <div class="loader-container" id="loader">
             <div class="loader"></div>
             <div class="loader-text" id="loaderText">Анализ данных...</div>
         </div>
+        
         <button class="generate-btn" id="generateBtn" onclick="generateSignal()">🔮 Получить сигнал</button>
+        
         <div class="footer">
             <p>Средний выигрыш: <b>₽3,450</b></p>
             <p style="margin-top: 8px; font-size: 11px;">Обновлено: только что</p>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
         tg.setHeaderColor('#0a0a0f');
         tg.setBackgroundColor('#0a0a0f');
+
         const slots = [
             { name: "Gates of Olympus", icon: "⚡", provider: "Pragmatic" },
             { name: "Sweet Bonanza", icon: "🍭", provider: "Pragmatic" },
@@ -217,6 +245,7 @@
             { name: "Book of Dead", icon: "📖", provider: "Play'n GO" },
             { name: "Razor Shark", icon: "🦈", provider: "Push Gaming" }
         ];
+
         const loadingTexts = [
             "Подключение к серверу...",
             "Анализ последних 500 спинов...",
@@ -225,15 +254,28 @@
             "Генерация прогноза ИИ...",
             "Проверка коэффициентов..."
         ];
+
+        // Таймер обратного отсчёта
+        let minutes = 5;
+        setInterval(() => {
+            minutes--;
+            if(minutes < 0) minutes = 5;
+            document.getElementById('countdown').textContent = 
+                `0${minutes}:00`;
+        }, 1000);
+
         function generateSignal() {
             const btn = document.getElementById('generateBtn');
             const loader = document.getElementById('loader');
             const card = document.getElementById('signalCard');
             const loaderText = document.getElementById('loaderText');
+
             card.style.display = 'none';
             btn.style.display = 'none';
             loader.style.display = 'block';
+
             tg.HapticFeedback.impactOccurred('heavy');
+
             let step = 0;
             const interval = setInterval(() => {
                 if (step < loadingTexts.length) {
@@ -241,34 +283,51 @@
                     step++;
                 }
             }, 400);
+
             setTimeout(() => {
                 clearInterval(interval);
                 showResult();
             }, 2500);
         }
+
         function showResult() {
             const loader = document.getElementById('loader');
             const card = document.getElementById('signalCard');
             const btn = document.getElementById('generateBtn');
+
             const slot = slots[Math.floor(Math.random() * slots.length)];
             const winRate = Math.floor(Math.random() * (99 - 87) + 87);
             const bet = [20, 30, 50, 100, 150, 200][Math.floor(Math.random() * 6)];
             const strategies = ['x2', 'x3', 'x5', 'Risk'];
             const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+            
             const now = new Date();
             now.setMinutes(now.getMinutes() + Math.floor(Math.random() * 10) + 1);
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0');
+
             document.getElementById('slotIcon').textContent = slot.icon;
             document.getElementById('slotName').textContent = slot.name;
             document.getElementById('winRate').textContent = winRate + '%';
             document.getElementById('bestTime').textContent = timeStr;
             document.getElementById('betSize').textContent = bet + '₽';
             document.getElementById('strategy').textContent = strategy;
+
             loader.style.display = 'none';
             card.style.display = 'block';
             btn.style.display = 'block';
             btn.textContent = '🔄 Новый сигнал';
+
             tg.HapticFeedback.notificationOccurred('success');
+
+            // Конфетти!
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffd700', '#9d00ff', '#00ff88']
+            });
+
             tg.sendData(JSON.stringify({
                 action: 'signal_generated',
                 slot: slot.name,
@@ -279,9 +338,11 @@
                 time: timeStr,
                 timestamp: new Date().toISOString()
             }));
+
             const wins = Math.floor(Math.random() * (200000 - 100000) + 100000);
             document.getElementById('todayWins').textContent = '₽' + wins.toLocaleString();
         }
+
         setInterval(() => {
             const accuracy = (94 + Math.random() * 2).toFixed(1);
             document.getElementById('accuracy').textContent = accuracy + '%';
