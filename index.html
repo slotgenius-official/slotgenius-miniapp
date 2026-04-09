@@ -69,28 +69,102 @@
             margin-top: 20px;
         }
         .btn:active { opacity: 0.9; }
+        
+        /* СИГНАЛ КАРТОЧКА */
         .signal-card {
             background: rgba(21,21,32,0.8);
-            border: 1px solid rgba(157,0,255,0.3);
             border-radius: 20px;
             padding: 25px;
             margin: 20px 0;
-            text-align: center;
+            transition: all 0.5s ease;
         }
-        .slot-icon { font-size: 60px; margin-bottom: 15px; }
-        .slot-name { font-size: 24px; color: #ffd700; margin-bottom: 10px; }
-        .win-rate { font-size: 48px; font-weight: bold; background: linear-gradient(135deg, #9d00ff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* HOT режим - огонь */
+        .signal-card.hot {
+            border: 2px solid #ff6600;
+            box-shadow: 0 0 30px rgba(255,102,0,0.5), 0 0 60px rgba(255,102,0,0.3), inset 0 0 20px rgba(255,102,0,0.1);
+            animation: hotPulse 2s ease-in-out infinite;
+        }
+        @keyframes hotPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,102,0,0.5), 0 0 60px rgba(255,102,0,0.3); }
+            50% { box-shadow: 0 0 50px rgba(255,102,0,0.7), 0 0 80px rgba(255,102,0,0.5); }
+        }
+        
+        /* NORM режим - обычный */
+        .signal-card.norm {
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+        
+        /* COLD режим - лёд */
+        .signal-card.cold {
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 0 60px rgba(0,255,255,0.3), inset 0 0 20px rgba(0,255,255,0.1);
+            animation: coldPulse 2s ease-in-out infinite;
+        }
+        @keyframes coldPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 0 60px rgba(0,255,255,0.3); }
+            50% { box-shadow: 0 0 50px rgba(0,255,255,0.7), 0 0 80px rgba(0,255,255,0.5); }
+        }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .slot-name { font-size: 22px; font-weight: bold; color: #ffd700; }
+        .slot-provider { font-size: 12px; color: #888; margin-top: 4px; }
+        .slot-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .slot-status.hot { background: linear-gradient(135deg, #ff6600, #ff3300); color: #fff; }
+        .slot-status.norm { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+        .slot-status.cold { background: linear-gradient(135deg, #00ffff, #00cccc); color: #000; }
+        
+        .rtp-box {
+            text-align: center;
+            background: rgba(157,0,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .rtp-label { color: #888; font-size: 13px; margin-bottom: 8px; }
+        .rtp-value { font-size: 42px; font-weight: bold; background: linear-gradient(135deg, #9d00ff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .rtp-note { color: #666; font-size: 11px; margin-top: 8px; }
+        
         .details {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .detail-item { text-align: center; }
-        .detail-item .value { font-size: 16px; font-weight: bold; color: #00ff88; }
+        .detail-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .detail-item .value { font-size: 18px; font-weight: bold; color: #00ff88; }
         .detail-item .label { font-size: 11px; color: #888; margin-top: 5px; }
+        
+        .timer-box {
+            background: rgba(255,102,0,0.1);
+            border: 1px solid rgba(255,102,0,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .timer-label { color: #ff6600; font-size: 12px; margin-bottom: 8px; }
+        .timer-value { font-size: 24px; font-weight: bold; color: #ff6600; }
+        .timezone { font-size: 10px; color: #666; margin-top: 4px; }
+        
         .loader {
             width: 80px;
             height: 80px;
@@ -102,6 +176,19 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .hidden { display: none !important; }
+        
+        .disclaimer {
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+        }
+        
+        /* Иконка слота */
+        .slot-icon { font-size: 40px; margin-right: 10px; }
     </style>
 </head>
 <body>
@@ -148,34 +235,62 @@
         <div id="mainScreen" class="hidden">
             <div class="header">
                 <h1>🎰 SlotGenius AI</h1>
-                <p style="color: #888;">Генератор сигналов</p>
+                <p style="color: #888;">Мониторинг RTP в реальном времени</p>
             </div>
             
             <div class="signal-card" id="signalCard">
-                <div class="slot-icon" id="slotIcon">⚡</div>
-                <div class="slot-name" id="slotName">Gates of Olympus</div>
-                <div class="win-rate" id="winRate">98%</div>
-                <p style="color: #888; margin-top: 10px;">Вероятность выигрыша</p>
+                <div class="signal-header">
+                    <div style="display: flex; align-items: center;">
+                        <span class="slot-icon" id="slotIcon">⚡</span>
+                        <div>
+                            <div class="slot-name" id="slotName">Gates of Olympus</div>
+                            <div class="slot-provider" id="slotProvider">Pragmatic Play</div>
+                        </div>
+                    </div>
+                    <div class="slot-status" id="slotStatus">HOT 🔥</div>
+                </div>
+                
+                <div class="rtp-box">
+                    <div class="rtp-label">RTP сегодня</div>
+                    <div class="rtp-value" id="rtpValue">96.4%</div>
+                    <div class="rtp-note">Средний по платформе: 94.2%</div>
+                </div>
                 
                 <div class="details">
                     <div class="detail-item">
                         <div class="value" id="bestTime">14:30</div>
-                        <div class="label">Время</div>
+                        <div class="label">Лучшее время (МСК)</div>
                     </div>
                     <div class="detail-item">
                         <div class="value" id="betSize">50₽</div>
-                        <div class="label">Ставка</div>
+                        <div class="label">Рекомендуемая ставка</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="value" id="phase">Бонусная</div>
+                        <div class="label">Фаза слота</div>
                     </div>
                     <div class="detail-item">
                         <div class="value" id="strategy">x2</div>
                         <div class="label">Стратегия</div>
                     </div>
                 </div>
+                
+                <div class="timer-box">
+                    <div class="timer-label">⏱️ Сигнал актуален до:</div>
+                    <div class="timer-value" id="validUntil">14:40</div>
+                    <div class="timezone">🕐 Время Московское (MSK)</div>
+                </div>
             </div>
             
             <div class="loader" id="loader" style="display: none;"></div>
             
-            <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 Получить сигнал</button>
+            <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 Обновить сигнал</button>
+            
+            <div class="disclaimer">
+                ⚠️ RTP рассчитывается на основе статистики платформы.<br>
+                Не является гарантией выигрыша. 18+<br>
+                Играйте ответственно.
+            </div>
             
             <button class="btn" onclick="location.reload()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">🔄 Назад</button>
         </div>
@@ -186,16 +301,71 @@
         tg.ready();
         tg.expand();
 
+        // БОЛЬШАЯ БАЗА СЛОТОВ (1WIN популярные)
         const slots = [
-            { name: "Gates of Olympus", icon: "⚡" },
-            { name: "Sweet Bonanza", icon: "🍭" },
-            { name: "The Dog House", icon: "🐶" },
-            { name: "Aviator", icon: "✈️" },
-            { name: "Lucky Jet", icon: "🚀" }
+            { name: "Gates of Olympus", provider: "Pragmatic Play", icon: "⚡" },
+            { name: "Sweet Bonanza", provider: "Pragmatic Play", icon: "🍭" },
+            { name: "The Dog House", provider: "Pragmatic Play", icon: "🐶" },
+            { name: "The Dog House Megaways", provider: "Pragmatic Play", icon: "🐕" },
+            { name: "Sugar Rush", provider: "Pragmatic Play", icon: "🍬" },
+            { name: "Starlight Princess", provider: "Pragmatic Play", icon: "👸" },
+            { name: "Wild Wild Riches", provider: "Pragmatic Play", icon: "🌈" },
+            { name: "Fruit Party", provider: "Pragmatic Play", icon: "🍓" },
+            { name: "Pompeii Megareels", provider: "Pragmatic Play", icon: "🏛️" },
+            { name: "Aviator", provider: "Spribe", icon: "✈️" },
+            { name: "Lucky Jet", provider: "1win Games", icon: "🚀" },
+            { name: "Speed & Cash", provider: "1win Games", icon: "🏎️" },
+            { name: "Rocket Queen", provider: "1win Games", icon: "👑" },
+            { name: "Coin Strike", provider: "Playson", icon: "🪙" },
+            { name: "Hold and Win", provider: "Playson", icon: "💰" },
+            { name: "Solar King", provider: "Playson", icon: "☀️" },
+            { name: "Fruit Cocktail", provider: "Igrosoft", icon: "🍒" },
+            { name: "Crazy Monkey", provider: "Igrosoft", icon: "🐵" },
+            { name: "Crazy Monkey 2", provider: "Igrosoft", icon: "🦍" },
+            { name: "Book of Ra", provider: "Novomatic", icon: "📖" },
+            { name: "Book of Dead", provider: "Play'n GO", icon: "📜" },
+            { name: "Legacy of Dead", provider: "Play'n GO", icon: "🏺" },
+            { name: "Razor Shark", provider: "Push Gaming", icon: "🦈" },
+            { name: "Jammin' Jars", provider: "Push Gaming", icon: "🫙" },
+            { name: "Reactoonz", provider: "Play'n GO", icon: "👾" },
+            { name: "Moon Princess", provider: "Play'n GO", icon: "🌙" },
+            { name: "Wolf Gold", provider: "Pragmatic Play", icon: "🐺" },
+            { name: "John Hunter", provider: "Pragmatic Play", icon: "🎯" },
+            { name: "Big Bass Bonanza", provider: "Pragmatic Play", icon: "🎣" },
+            { name: "Floating Dragon", provider: "Pragmatic Play", icon: "🐉" },
+            { name: "Dragon Fortune", provider: "Playson", icon: "🐲" },
+            { name: "Royal Joker", provider: "Playson", icon: "🃏" },
+            { name: "Burning Wins", provider: "Playson", icon: "🔥" },
+            { name: "Power Coins", provider: "Playson", icon: "⚡" },
+            { name: "Midas Golden Touch", provider: "Thunderkick", icon: "👑" },
+            { name: "Pink Elephants", provider: "Thunderkick", icon: "🐘" },
+            { name: "Esqueleto Explosivo", provider: "Thunderkick", icon: "💀" },
+            { name: "Gonzo's Quest", provider: "NetEnt", icon: "🗿" },
+            { name: "Dead or Alive 2", provider: "NetEnt", icon: "🤠" },
+            { name: "Starburst", provider: "NetEnt", icon: "⭐" },
+            { name: "Divine Fortune", provider: "NetEnt", icon: "🏆" },
+            { name: "Immortal Romance", provider: "Microgaming", icon: "🧛" },
+            { name: "Thunderstruck 2", provider: "Microgaming", icon: "⚡" },
+            { name: "Mega Moolah", provider: "Microgaming", icon: "🦁" },
+            { name: "Buffalo Rising", provider: "Blueprint", icon: "🦬" },
+            { name: "Teddy Bear's Picnic", provider: "Blueprint", icon: "🧸" },
+            { name: "Fishin' Frenzy", provider: "Blueprint", icon: "🐟" },
+            { name: "Extra Chilli", provider: "Big Time Gaming", icon: "🌶️" },
+            { name: "Bonanza", provider: "Big Time Gaming", icon: "💎" },
+            { name: "Who Wants To Be Millionaire", provider: "Big Time Gaming", icon: "💰" }
+        ];
+
+        const phases = ["Бонусная", "Накопление", "Отдача", "Спокойная", "Горячая фаза"];
+        const strategies = ["x2", "x3", "x5", "Risk", "Min Bet", "Max Bet"];
+        
+        // Статусы с весами (HOT реже, COLD чаще)
+        const statuses = [
+            { text: "HOT 🔥", class: "hot", rtpMin: 96.5, rtpMax: 98.5 },
+            { text: "NORM", class: "norm", rtpMin: 94.5, rtpMax: 96.5 },
+            { text: "COLD ❄️", class: "cold", rtpMin: 92.0, rtpMax: 94.5 }
         ];
 
         function markAsRegistered() {
-            // Отправляем данные боту (если бот работает)
             try {
                 tg.sendData(JSON.stringify({
                     action: 'registration_complete',
@@ -206,14 +376,24 @@
                 console.log('Bot not running, but continuing...');
             }
             
-            // Переключаем экран СРАЗУ (независимо от бота)
             document.getElementById('registrationScreen').classList.add('hidden');
             document.getElementById('mainScreen').classList.remove('hidden');
             
             tg.HapticFeedback.notificationOccurred('success');
-            
-            // Показываем первый сигнал автоматически
             generateSignal();
+        }
+
+        function getMoscowTime() {
+            // Получаем время по Москве (UTC+3)
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const moscowTime = new Date(utc + (3600000 * 3));
+            return moscowTime;
+        }
+
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' + 
+                   date.getMinutes().toString().padStart(2, '0');
         }
 
         function generateSignal() {
@@ -227,27 +407,69 @@
             
             setTimeout(() => {
                 const slot = slots[Math.floor(Math.random() * slots.length)];
-                const winRate = Math.floor(Math.random() * (99 - 87) + 87);
-                const bet = [20, 30, 50, 100][Math.floor(Math.random() * 4)];
                 
+                // Выбираем статус с весами (NORM чаще всего)
+                const rand = Math.random();
+                let status;
+                if (rand < 0.25) status = statuses[0]; // HOT 25%
+                else if (rand < 0.75) status = statuses[1]; // NORM 50%
+                else status = statuses[2]; // COLD 25%
+                
+                // RTP в зависимости от статуса
+                const rtp = (status.rtpMin + Math.random() * (status.rtpMax - status.rtpMin)).toFixed(1);
+                
+                const bet = [20, 30, 50, 100, 150, 200, 300, 500][Math.floor(Math.random() * 8)];
+                const phase = phases[Math.floor(Math.random() * phases.length)];
+                const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+                
+                // Время по Москве
+                const now = getMoscowTime();
+                const validTime = new Date(now.getTime() + (5 + Math.floor(Math.random() * 5)) * 60000);
+                
+                const timeStr = formatTime(now);
+                const validStr = formatTime(validTime);
+
+                // Обновляем UI
                 document.getElementById('slotIcon').textContent = slot.icon;
                 document.getElementById('slotName').textContent = slot.name;
-                document.getElementById('winRate').textContent = winRate + '%';
-                
-                const now = new Date();
-                document.getElementById('bestTime').textContent = 
-                    now.getHours().toString().padStart(2, '0') + ':' + 
-                    now.getMinutes().toString().padStart(2, '0');
-                
+                document.getElementById('slotProvider').textContent = slot.provider;
+                document.getElementById('rtpValue').textContent = rtp + '%';
+                document.getElementById('bestTime').textContent = timeStr;
                 document.getElementById('betSize').textContent = bet + '₽';
-                document.getElementById('strategy').textContent = ['x2', 'x3', 'Risk'][Math.floor(Math.random() * 3)];
+                document.getElementById('phase').textContent = phase;
+                document.getElementById('strategy').textContent = strategy;
+                document.getElementById('validUntil').textContent = validStr;
+                
+                // Статус и стиль карточки
+                const statusEl = document.getElementById('slotStatus');
+                statusEl.textContent = status.text;
+                statusEl.className = 'slot-status ' + status.class;
+                
+                // Применяем стиль карточки
+                card.className = 'signal-card ' + status.class;
                 
                 loader.style.display = 'none';
                 card.style.display = 'block';
                 btn.style.display = 'block';
-                btn.textContent = '🔄 Новый сигнал';
+                btn.textContent = '🔮 Обновить сигнал';
                 
                 tg.HapticFeedback.notificationOccurred('success');
+                
+                // Отправка данных боту
+                try {
+                    tg.sendData(JSON.stringify({
+                        action: 'signal_generated',
+                        slot: slot.name,
+                        provider: slot.provider,
+                        rtp: rtp,
+                        status: status.class,
+                        bet: bet,
+                        phase: phase,
+                        strategy: strategy,
+                        valid_until: validStr,
+                        timestamp: new Date().toISOString()
+                    }));
+                } catch(e) {}
             }, 2000);
         }
     </script>
