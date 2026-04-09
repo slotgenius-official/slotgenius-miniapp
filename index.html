@@ -15,7 +15,6 @@
             padding: 20px;
         }
         .container { max-width: 480px; margin: 0 auto; }
-        
         .header { text-align: center; padding: 30px 0; }
         .header h1 {
             font-size: 32px;
@@ -24,10 +23,6 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
-        
-        .registration-screen { display: block; }
-        .main-screen { display: none; }
-        
         .info-box {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(157,0,255,0.3);
@@ -35,10 +30,8 @@
             padding: 25px;
             margin: 20px 0;
         }
-        
         .info-box h2 { color: #ffd700; margin-bottom: 15px; font-size: 20px; }
         .info-box p { color: #aaa; line-height: 1.6; margin-bottom: 10px; }
-        
         .partner-link {
             background: linear-gradient(135deg, #9d00ff, #bd00ff);
             border-radius: 12px;
@@ -52,9 +45,7 @@
         .partner-link:active { transform: scale(0.98); }
         .partner-link .title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
         .partner-link .desc { font-size: 13px; opacity: 0.9; }
-        
         .partner-link.xbet { background: linear-gradient(135deg, #1a237e, #283593); }
-        
         .steps {
             background: rgba(255,215,0,0.1);
             border-left: 4px solid #ffd700;
@@ -65,7 +56,6 @@
         .steps h3 { color: #ffd700; margin-bottom: 10px; }
         .steps ol { padding-left: 20px; color: #ccc; }
         .steps li { margin: 8px 0; }
-        
         .btn {
             width: 100%;
             background: linear-gradient(135deg, #00ff88, #00cc6a);
@@ -78,7 +68,7 @@
             cursor: pointer;
             margin-top: 20px;
         }
-        
+        .btn:active { opacity: 0.9; }
         .signal-card {
             background: rgba(21,21,32,0.8);
             border: 1px solid rgba(157,0,255,0.3);
@@ -90,7 +80,6 @@
         .slot-icon { font-size: 60px; margin-bottom: 15px; }
         .slot-name { font-size: 24px; color: #ffd700; margin-bottom: 10px; }
         .win-rate { font-size: 48px; font-weight: bold; background: linear-gradient(135deg, #9d00ff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
         .details {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -102,7 +91,6 @@
         .detail-item { text-align: center; }
         .detail-item .value { font-size: 16px; font-weight: bold; color: #00ff88; }
         .detail-item .label { font-size: 11px; color: #888; margin-top: 5px; }
-        
         .loader {
             width: 80px;
             height: 80px;
@@ -113,14 +101,13 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- ЭКРАН РЕГИСТРАЦИИ -->
-        <div id="registrationScreen" class="registration-screen">
+        <div id="registrationScreen">
             <div class="header">
                 <h1>🎰 SlotGenius AI</h1>
                 <p style="color: #888;">Система анализа игровых автоматов</p>
@@ -137,7 +124,7 @@
                 <ol>
                     <li>Зарегистрируйся по ссылке ниже</li>
                     <li>Пополни баланс (мин. 100₽)</li>
-                    <li>Вернись в бота и нажми "✅ Я зарегистрировался"</li>
+                    <li>Вернись и нажми "✅ Я зарегистрировался"</li>
                     <li>Получай сигналы и выигрывай!</li>
                 </ol>
             </div>
@@ -158,9 +145,9 @@
         </div>
         
         <!-- ОСНОВНОЙ ЭКРАН (сигналы) -->
-        <div id="mainScreen" class="main-screen hidden">
+        <div id="mainScreen" class="hidden">
             <div class="header">
-                <h1> SlotGenius AI</h1>
+                <h1>🎰 SlotGenius AI</h1>
                 <p style="color: #888;">Генератор сигналов</p>
             </div>
             
@@ -189,6 +176,8 @@
             <div class="loader" id="loader" style="display: none;"></div>
             
             <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 Получить сигнал</button>
+            
+            <button class="btn" onclick="location.reload()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">🔄 Назад</button>
         </div>
     </div>
 
@@ -205,22 +194,26 @@
             { name: "Lucky Jet", icon: "🚀" }
         ];
 
-        // Проверяем, зарегистрирован ли пользователь
-        tg.sendData(JSON.stringify({ action: 'check_registration' }));
-
         function markAsRegistered() {
-            // Отправляем данные боту
-            tg.sendData(JSON.stringify({
-                action: 'registration_complete',
-                platform: 'partner',
-                timestamp: new Date().toISOString()
-            }));
+            // Отправляем данные боту (если бот работает)
+            try {
+                tg.sendData(JSON.stringify({
+                    action: 'registration_complete',
+                    platform: 'partner',
+                    timestamp: new Date().toISOString()
+                }));
+            } catch(e) {
+                console.log('Bot not running, but continuing...');
+            }
             
-            // Показываем основной экран
+            // Переключаем экран СРАЗУ (независимо от бота)
             document.getElementById('registrationScreen').classList.add('hidden');
             document.getElementById('mainScreen').classList.remove('hidden');
             
             tg.HapticFeedback.notificationOccurred('success');
+            
+            // Показываем первый сигнал автоматически
+            generateSignal();
         }
 
         function generateSignal() {
@@ -240,8 +233,14 @@
                 document.getElementById('slotIcon').textContent = slot.icon;
                 document.getElementById('slotName').textContent = slot.name;
                 document.getElementById('winRate').textContent = winRate + '%';
-                document.getElementById('bestTime').textContent = new Date().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+                
+                const now = new Date();
+                document.getElementById('bestTime').textContent = 
+                    now.getHours().toString().padStart(2, '0') + ':' + 
+                    now.getMinutes().toString().padStart(2, '0');
+                
                 document.getElementById('betSize').textContent = bet + '₽';
+                document.getElementById('strategy').textContent = ['x2', 'x3', 'Risk'][Math.floor(Math.random() * 3)];
                 
                 loader.style.display = 'none';
                 card.style.display = 'block';
