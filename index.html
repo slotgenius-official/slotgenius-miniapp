@@ -53,46 +53,42 @@
     </style>
 </head>
 <body>
-    <div class="lang-switch"><button class="lang-btn" id="langBtn" onclick="toggleLanguage()">🇵🇹 PT</button></div>
+    <div class="lang-switch"><button class="lang-btn" id="langBtn" onclick="toggleLanguage()">PT</button></div>
     <div class="container">
         <div id="registrationScreen">
-            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;" data-lang="subtitle">Система анализа игровых автоматов</p></div>
-            <div class="info-box"><h2 data-lang="important_title">🔥 Важно!</h2><p data-lang="important_text1">Для получения доступа к сигналам необходимо зарегистрироваться на одном из партнёрских проектов.</p><p data-lang="important_text2">Наши алгоритмы протестированы именно на этих платформах.</p></div>
-            <div class="steps"><h3 data-lang="steps_title">📋 Как получить доступ:</h3><ol><li data-lang="step1">Зарегистрируйся по ссылке ниже</li><li data-lang="step2">Пополни баланс (мин. 100₽)</li><li data-lang="step3">Вернись и нажми "✅ Я зарегистрировался"</li><li data-lang="step4">Получай сигналы и выигрывай!</li></ol></div>
-            <a href="https://lkhq.cc/1a8208f2" target="_blank" class="partner-link"><div class="title">🎰 1WIN — <span data-lang="recommended">Рекомендуем</span></div><div class="desc">⭐ <span data-lang="1win_desc">Лучшая совместимость • Мгновенные выплаты</span></div></a>
-            <a href="https://refpa27918.com/L?tag=s_4880605m_355c_10&site=4880605&ad=355&r=registration" target="_blank" class="partner-link xbet"><div class="title">⚽ 1xBet — <span data-lang="alternative">Альтернатива</span></div><div class="desc">🌍 <span data-lang="1xbet_desc">Широкий выбор • Надёжная платформа</span></div></a>
-            <button class="btn" id="registerBtn" onclick="markAsRegistered()">✅ <span data-lang="registered_btn">Я зарегистрировался</span></button>
-            <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;" data-lang="disclaimer">⚠️ 18+ | Играйте ответственно</p>
+            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;">Analytics System</p></div>
+            <div class="info-box"><h2>Important!</h2><p>You need to register on a partner platform to get access to signals.</p><p>Our algorithms are tested on these platforms.</p></div>
+            <div class="steps"><h3>How to get access:</h3><ol><li>Register via link below</li><li>Deposit (min. 100RUB)</li><li>Come back and click "I registered"</li><li>Get signals and win!</li></ol></div>
+            <a href="https://lkhq.cc/1a8208f2" target="_blank" class="partner-link"><div class="title">🎰 1WIN - Recommended</div><div class="desc">⭐ Best compatibility - Instant payouts</div></a>
+            <a href="https://refpa27918.com/L?tag=s_4880605m_355c_10&site=4880605&ad=355&r=registration" target="_blank" class="partner-link xbet"><div class="title">⚽ 1xBet - Alternative</div><div class="desc">🌍 Wide selection - Reliable platform</div></a>
+            <button class="btn" id="registerBtn" onclick="markAsRegistered()">✅ I Registered</button>
+            <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;">⚠️ 18+ | Play responsibly</p>
         </div>
         <div id="mainScreen" class="hidden">
-            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;" data-lang="main_subtitle">Мониторинг RTP в реальном времени</p></div>
+            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;">Real-time RTP Monitoring</p></div>
             <div class="signal-card" id="signalCard">
-                <div class="signal-header"><div style="display: flex; align-items: center;"><span class="slot-icon" id="slotIcon">⚡</span><div><div class="slot-name" id="slotName">Gates of Olympus</div><div class="slot-provider" id="slotProvider">Pragmatic Play</div></div></div><div class="slot-status" id="slotStatus">HOT 🔥</div></div>
-                <div class="rtp-box"><div class="rtp-label" data-lang="rtp_label">RTP сегодня</div><div class="rtp-value" id="rtpValue">96.4%</div><div class="rtp-note" data-lang="rtp_note">Средний по платформе: 94.2%</div></div>
-                <div class="details"><div class="detail-item"><div class="value" id="bestTime">14:30</div><div class="label" data-lang="best_time_label">Лучшее время (МСК)</div></div><div class="detail-item"><div class="value" id="betSize">50₽</div><div class="label" data-lang="bet_label">Рекомендуемая ставка</div></div><div class="detail-item"><div class="value" id="phase">Бонусная</div><div class="label" data-lang="phase_label">Фаза слота</div></div><div class="detail-item"><div class="value" id="strategy">x2</div><div class="label" data-lang="strategy_label">Стратегия</div></div></div>
-                <div class="timer-box"><div class="timer-label" data-lang="timer_label">⏱️ Сигнал актуален до:</div><div class="timer-value" id="validUntil">14:40</div><div class="timezone" data-lang="timezone">🕐 Время Московское (MSK)</div></div>
+                <div class="signal-header"><div style="display: flex; align-items: center;"><span class="slot-icon" id="slotIcon"></span><div><div class="slot-name" id="slotName"></div><div class="slot-provider" id="slotProvider"></div></div></div><div class="slot-status" id="slotStatus"></div></div>
+                <div class="rtp-box"><div class="rtp-label">RTP Today</div><div class="rtp-value" id="rtpValue"></div><div class="rtp-note">Platform average: 94.2%</div></div>
+                <div class="details"><div class="detail-item"><div class="value" id="bestTime"></div><div class="label">Best Time (MSK)</div></div><div class="detail-item"><div class="value" id="betSize"></div><div class="label">Recommended Bet</div></div><div class="detail-item"><div class="value" id="phase"></div><div class="label">Slot Phase</div></div><div class="detail-item"><div class="value" id="strategy"></div><div class="label">Strategy</div></div></div>
+                <div class="timer-box"><div class="timer-label">Signal valid until:</div><div class="timer-value" id="validUntil"></div><div class="timezone">Moscow Time (MSK)</div></div>
             </div>
-            <div class="loader" id="loader" style="display: none;"></div>
-            <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 <span data-lang="generate_btn">Обновить сигнал</span></button>
-            <div class="disclaimer"><span data-lang="disclaimer_full">⚠️ RTP рассчитывается на основе статистики платформы.<br>Не является гарантией выигрыша. 18+<br>Играйте ответственно.</span></div>
-            <button class="btn" onclick="closeApp()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">❌ <span data-lang="close_btn">Закрыть</span></button>
+            <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 Get New Signal</button>
+            <div class="disclaimer">RTP is calculated based on platform statistics. Not a guarantee of winnings. 18+</div>
+            <button class="btn" onclick="tg.close()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">❌ Close</button>
         </div>
     </div>
     <script>
-        const tg = window.Telegram.WebApp;
+        var tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        const translations = {
-            ru: { subtitle: "Система анализа игровых автоматов", important_title: "🔥 Важно!", important_text1: "Для получения доступа к сигналам необходимо зарегистрироваться на одном из партнёрских проектов.", important_text2: "Наши алгоритмы протестированы именно на этих платформах.", steps_title: "📋 Как получить доступ:", step1: "Зарегистрируйся по ссылке ниже", step2: "Пополни баланс (мин. 100₽)", step3: "Вернись и нажми \"✅ Я зарегистрировался\"", step4: "Получай сигналы и выигрывай!", recommended: "Рекомендуем", 1win_desc: "Лучшая совместимость • Мгновенные выплаты", alternative: "Альтернатива", 1xbet_desc: "Широкий выбор • Надёжная платформа", registered_btn: "Я зарегистрировался", disclaimer: "⚠️ 18+ | Играйте ответственно", main_subtitle: "Мониторинг RTP в реальном времени", rtp_label: "RTP сегодня", rtp_note: "Средний по платформе: 94.2%", best_time_label: "Лучшее время (МСК)", bet_label: "Рекомендуемая ставка", phase_label: "Фаза слота", strategy_label: "Стратегия", timer_label: "⏱️ Сигнал актуален до:", timezone: "🕐 Время Московское (MSK)", generate_btn: "Обновить сигнал", disclaimer_full: "⚠️ RTP рассчитывается на основе статистики платформы.<br>Не является гарантией выигрыша. 18+<br>Играйте ответственно.", close_btn: "Закрыть", phases: ["Бонусная", "Накопление", "Отдача", "Спокойная", "Горячая фаза"], strategies: ["x2", "x3", "x5", "Risk", "Min Bet", "Max Bet"], status_hot: "HOT 🔥", status_norm: "NORM", status_cold: "COLD ❄️" },
-            pt: { subtitle: "Sistema de análise de caça-níqueis", important_title: "🔥 Importante!", important_text1: "Para acessar os sinais, você precisa se registrar em um dos projetos parceiros.", important_text2: "Nossos algoritmos são testados exatamente nessas plataformas.", steps_title: "📋 Como obter acesso:", step1: "Registre-se pelo link abaixo", step2: "Deposite (mín. 100₽)", step3: "Volte e clique em \"✅ Eu me registrei\"", step4: "Receba sinais e ganhe!", recommended: "Recomendado", 1win_desc: "Melhor compatibilidade • Pagamentos instantâneos", alternative: "Alternativa", 1xbet_desc: "Grande variedade • Plataforma confiável", registered_btn: "Eu me registrei", disclaimer: "⚠️ 18+ | Jogue com responsabilidade", main_subtitle: "Monitoramento RTP em tempo real", rtp_label: "RTP hoje", rtp_note: "Média da plataforma: 94.2%", best_time_label: "Melhor horário (MSK)", bet_label: "Aposta recomendada", phase_label: "Fase do slot", strategy_label: "Estratégia", timer_label: "⏱️ Sinal válido até:", timezone: "🕐 Horário de Moscou (MSK)", generate_btn: "Atualizar sinal", disclaimer_full: "⚠️ RTP é calculado com base nas estatísticas da plataforma.<br>Não é garantia de ganho. 18+<br>Jogue com responsabilidade.", close_btn: "Fechar", phases: ["Bônus", "Acumulação", "Retorno", "Calma", "Fase quente"], strategies: ["x2", "x3", "x5", "Risk", "Aposta mín", "Aposta máx"], status_hot: "QUENTE 🔥", status_norm: "NORMAL", status_cold: "FRIO ❄️" }
-        };
+        var currentLang = 'ru';
+        var userLang = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || 'ru';
+        if (userLang === 'pt' || userLang === 'pt-BR' || userLang === 'pt-PT') {
+            currentLang = 'pt';
+        }
 
-        let currentLang = 'ru';
-        const userLang = tg.initDataUnsafe?.user?.language_code || 'ru';
-        if (userLang === 'pt' || userLang === 'pt-BR' || userLang === 'pt-PT') currentLang = 'pt';
-
-        const slots = [
+        var slots = [
             { name: "Gates of Olympus", provider: "Pragmatic Play", icon: "⚡" },
             { name: "Sweet Bonanza", provider: "Pragmatic Play", icon: "🍭" },
             { name: "The Dog House", provider: "Pragmatic Play", icon: "🐶" },
@@ -100,99 +96,92 @@
             { name: "Lucky Jet", provider: "1win Games", icon: "🚀" }
         ];
 
-        const statuses = [
-            { text: translations[currentLang].status_hot, class: "hot", rtpMin: 96.5, rtpMax: 98.5 },
-            { text: translations[currentLang].status_norm, class: "norm", rtpMin: 94.5, rtpMax: 96.5 },
-            { text: translations[currentLang].status_cold, class: "cold", rtpMin: 92.0, rtpMax: 94.5 }
+        var statuses = [
+            { text: "HOT 🔥", class: "hot", rtpMin: 96.5, rtpMax: 98.5 },
+            { text: "NORM", class: "norm", rtpMin: 94.5, rtpMax: 96.5 },
+            { text: "COLD ❄️", class: "cold", rtpMin: 92.0, rtpMax: 94.5 }
         ];
+
+        var phases = ["Bonus", "Accumulation", "Payout", "Calm", "Hot Phase"];
+        var strategies = ["x2", "x3", "x5", "Risk", "Min Bet", "Max Bet"];
 
         function toggleLanguage() {
             currentLang = currentLang === 'ru' ? 'pt' : 'ru';
-            document.getElementById('langBtn').textContent = currentLang === 'ru' ? '🇵🇹 PT' : '🇷🇺 RU';
-            applyTranslations();
+            document.getElementById('langBtn').textContent = currentLang === 'ru' ? '🇵 PT' : '🇺 RU';
         }
 
-        function applyTranslations() {
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                const key = el.getAttribute('data-lang');
-                if (translations[currentLang][key]) el.innerHTML = translations[currentLang][key];
-            });
-        }
-
-        function closeApp() { tg.close(); }
-
-        // === WORKING REGISTRATION FUNCTION ===
         function markAsRegistered() {
-            const btn = document.getElementById("registerBtn");
-            btn.innerHTML = "⏳ Проверка...";
+            var btn = document.getElementById("registerBtn");
+            btn.innerHTML = "⏳ Checking...";
             btn.disabled = true;
             
             setTimeout(function() {
                 document.getElementById("registrationScreen").classList.add("hidden");
                 document.getElementById("mainScreen").classList.remove("hidden");
-                alert("✅ Отлично!\n\nТеперь вернись в бота и нажми /start чтобы получить доступ к сигналам!");
+                alert("✅ Great!\n\nNow go back to the bot and press /start to get access to signals!");
                 generateSignal();
             }, 1000);
         }
 
         function getMoscowTime() {
-            const now = new Date();
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            var now = new Date();
+            var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             return new Date(utc + (3600000 * 3));
         }
 
         function formatTime(date) {
-            return date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+            var hours = date.getHours().toString();
+            var minutes = date.getMinutes().toString();
+            if (hours.length === 1) hours = "0" + hours;
+            if (minutes.length === 1) minutes = "0" + minutes;
+            return hours + ":" + minutes;
         }
 
         function generateSignal() {
-            const btn = document.getElementById('generateBtn');
-            const loader = document.getElementById('loader');
-            const card = document.getElementById('signalCard');
+            var btn = document.getElementById('generateBtn');
+            var card = document.getElementById('signalCard');
             
             card.style.display = 'none';
             btn.style.display = 'none';
-            loader.style.display = 'block';
             
             setTimeout(function() {
-                const slot = slots[Math.floor(Math.random() * slots.length)];
-                const rand = Math.random();
-                let status;
+                var slot = slots[Math.floor(Math.random() * slots.length)];
+                var rand = Math.random();
+                var status;
                 if (rand < 0.25) status = statuses[0];
                 else if (rand < 0.75) status = statuses[1];
                 else status = statuses[2];
                 
-                const rtp = (status.rtpMin + Math.random() * (status.rtpMax - status.rtpMin)).toFixed(1);
-                const bet = [20, 30, 50, 100, 150, 200][Math.floor(Math.random() * 6)];
-                const phase = translations[currentLang].phases[Math.floor(Math.random() * translations[currentLang].phases.length)];
-                const strategy = translations[currentLang].strategies[Math.floor(Math.random() * translations[currentLang].strategies.length)];
+                var rtp = (status.rtpMin + Math.random() * (status.rtpMax - status.rtpMin)).toFixed(1);
+                var bet = [20, 30, 50, 100, 150, 200][Math.floor(Math.random() * 6)];
+                var phase = phases[Math.floor(Math.random() * phases.length)];
+                var strategy = strategies[Math.floor(Math.random() * strategies.length)];
                 
-                const now = getMoscowTime();
-                const validTime = new Date(now.getTime() + (5 + Math.floor(Math.random() * 5)) * 60000);
+                var now = getMoscowTime();
+                var validTime = new Date(now.getTime() + (5 + Math.floor(Math.random() * 5)) * 60000);
                 
                 document.getElementById('slotIcon').textContent = slot.icon;
                 document.getElementById('slotName').textContent = slot.name;
                 document.getElementById('slotProvider').textContent = slot.provider;
                 document.getElementById('rtpValue').textContent = rtp + '%';
                 document.getElementById('bestTime').textContent = formatTime(now);
-                document.getElementById('betSize').textContent = bet + '₽';
+                document.getElementById('betSize').textContent = bet + ' RUB';
                 document.getElementById('phase').textContent = phase;
                 document.getElementById('strategy').textContent = strategy;
                 document.getElementById('validUntil').textContent = formatTime(validTime);
                 
-                const statusEl = document.getElementById('slotStatus');
+                var statusEl = document.getElementById('slotStatus');
                 statusEl.textContent = status.text;
                 statusEl.className = 'slot-status ' + status.class;
                 
-                loader.style.display = 'none';
                 card.style.display = 'block';
                 btn.style.display = 'block';
                 
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
             }, 2000);
         }
-
-        applyTranslations();
     </script>
 </body>
 </html>
