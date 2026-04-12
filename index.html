@@ -460,44 +460,24 @@
             tg.close();
         }
 
-        // === ВОТ ФУНКЦИЯ С ALERTS ===
+        // === РАБОЧАЯ ФУНКЦИЯ РЕГИСТРАЦИИ ===
         function markAsRegistered() {
-            // DEBUG ALERT - чтобы видеть что кнопка работает
-            alert("🔔 Кнопка нажата! Начинаем регистрацию...");
-            
             const btn = document.getElementById("registerBtn");
             
-            try {
-                // Отправляем данные боту
-                tg.sendData(JSON.stringify({
-                    action: "registration_complete",
-                    platform: "partner",
-                    timestamp: new Date().toISOString()
-                }));
-                
-                alert("✅ Данные отправлены боту!");
-                
-                // Вибрация
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred("success");
-                }
-                
-                // Показываем основной экран через 0.5 сек
-                setTimeout(() => {
-                    document.getElementById("registrationScreen").classList.add("hidden");
-                    document.getElementById("mainScreen").classList.remove("hidden");
-                    generateSignal();
-                }, 500);
-                
-            } catch(e) {
-                console.error("Error:", e);
-                alert("⚠️ Ошибка: " + e.message);
-                
-                // Даже если ошибка — показываем экран
+            // Показываем загрузку
+            btn.innerHTML = "⏳ Проверка...";
+            btn.disabled = true;
+            
+            // Просто переключаем экран
+            setTimeout(function() {
                 document.getElementById("registrationScreen").classList.add("hidden");
                 document.getElementById("mainScreen").classList.remove("hidden");
+                
+                // Показываем инструкцию
+                alert("✅ Отлично!\n\nТеперь вернись в бота и нажми /start чтобы получить доступ к сигналам!");
+                
                 generateSignal();
-            }
+            }, 1000);
         }
 
         function getMoscowTime() {
@@ -521,7 +501,7 @@
             btn.style.display = 'none';
             loader.style.display = 'block';
             
-            setTimeout(() => {
+            setTimeout(function() {
                 const slot = slots[Math.floor(Math.random() * slots.length)];
                 
                 const rand = Math.random();
@@ -563,23 +543,6 @@
                 
                 if (tg.HapticFeedback) {
                     tg.HapticFeedback.notificationOccurred('success');
-                }
-                
-                try {
-                    tg.sendData(JSON.stringify({
-                        action: 'signal_generated',
-                        slot: slot.name,
-                        provider: slot.provider,
-                        rtp: rtp,
-                        status: status.class,
-                        bet: bet,
-                        phase: phase,
-                        strategy: strategy,
-                        valid_until: validStr,
-                        timestamp: new Date().toISOString()
-                    }));
-                } catch(e) {
-                    console.log('Could not send signal data');
                 }
             }, 2000);
         }
