@@ -84,7 +84,7 @@
             cursor: pointer;
             margin-top: 20px;
         }
-        .btn:active { opacity: 0.9; }
+        .btn:active { opacity: 0.9; transform: scale(0.98); }
         .signal-card {
             background: rgba(21,21,32,0.8);
             border-radius: 20px;
@@ -230,7 +230,7 @@
                 <div class="desc">🌍 <span data-lang="1xbet_desc">Широкий выбор • Надёжная платформа</span></div>
             </a>
             
-            <button class="btn" onclick="markAsRegistered()">✅ <span data-lang="registered_btn">Я зарегистрировался</span></button>
+            <button class="btn" id="registerBtn" onclick="markAsRegistered()">✅ <span data-lang="registered_btn">Я зарегистрировался</span></button>
             
             <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;" data-lang="disclaimer">⚠️ 18+ | Играйте ответственно</p>
         </div>
@@ -294,7 +294,7 @@
                 <span data-lang="disclaimer_full">⚠️ RTP рассчитывается на основе статистики платформы.<br>Не является гарантией выигрыша. 18+<br>Играйте ответственно.</span>
             </div>
             
-            <button class="btn" onclick="location.reload()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">🔄 <span data-lang="back_btn">Назад</span></button>
+            <button class="btn" onclick="closeApp()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">❌ <span data-lang="close_btn">Закрыть</span></button>
         </div>
     </div>
 
@@ -332,7 +332,7 @@
                 timezone: "🕐 Время Московское (MSK)",
                 generate_btn: "Обновить сигнал",
                 disclaimer_full: "⚠️ RTP рассчитывается на основе статистики платформы.<br>Не является гарантией выигрыша. 18+<br>Играйте ответственно.",
-                back_btn: "Назад",
+                close_btn: "Закрыть",
                 phases: ["Бонусная", "Накопление", "Отдача", "Спокойная", "Горячая фаза"],
                 strategies: ["x2", "x3", "x5", "Risk", "Min Bet", "Max Bet"],
                 status_hot: "HOT 🔥",
@@ -366,7 +366,7 @@
                 timezone: "🕐 Horário de Moscou (MSK)",
                 generate_btn: "Atualizar sinal",
                 disclaimer_full: "⚠️ RTP é calculado com base nas estatísticas da plataforma.<br>Não é garantia de ganho. 18+<br>Jogue com responsabilidade.",
-                back_btn: "Voltar",
+                close_btn: "Fechar",
                 phases: ["Bônus", "Acumulação", "Retorno", "Calma", "Fase quente"],
                 strategies: ["x2", "x3", "x5", "Risk", "Aposta mín", "Aposta máx"],
                 status_hot: "QUENTE 🔥",
@@ -443,7 +443,7 @@
 
         function toggleLanguage() {
             currentLang = currentLang === 'ru' ? 'pt' : 'ru';
-            document.getElementById('langBtn').textContent = currentLang === 'ru' ? '🇵 PT' : '🇷🇺 RU';
+            document.getElementById('langBtn').textContent = currentLang === 'ru' ? '🇵🇹 PT' : '🇷🇺 RU';
             applyTranslations();
         }
 
@@ -456,22 +456,48 @@
             });
         }
 
+        function closeApp() {
+            tg.close();
+        }
+
+        // === ВОТ ФУНКЦИЯ С ALERTS ===
         function markAsRegistered() {
+            // DEBUG ALERT - чтобы видеть что кнопка работает
+            alert("🔔 Кнопка нажата! Начинаем регистрацию...");
+            
+            const btn = document.getElementById("registerBtn");
+            
             try {
+                // Отправляем данные боту
                 tg.sendData(JSON.stringify({
-                    action: 'registration_complete',
-                    platform: 'partner',
+                    action: "registration_complete",
+                    platform: "partner",
                     timestamp: new Date().toISOString()
                 }));
+                
+                alert("✅ Данные отправлены боту!");
+                
+                // Вибрация
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred("success");
+                }
+                
+                // Показываем основной экран через 0.5 сек
+                setTimeout(() => {
+                    document.getElementById("registrationScreen").classList.add("hidden");
+                    document.getElementById("mainScreen").classList.remove("hidden");
+                    generateSignal();
+                }, 500);
+                
             } catch(e) {
-                console.log('Bot not running, but continuing...');
+                console.error("Error:", e);
+                alert("⚠️ Ошибка: " + e.message);
+                
+                // Даже если ошибка — показываем экран
+                document.getElementById("registrationScreen").classList.add("hidden");
+                document.getElementById("mainScreen").classList.remove("hidden");
+                generateSignal();
             }
-            
-            document.getElementById('registrationScreen').classList.add('hidden');
-            document.getElementById('mainScreen').classList.remove('hidden');
-            
-            tg.HapticFeedback.notificationOccurred('success');
-            generateSignal();
         }
 
         function getMoscowTime() {
@@ -535,7 +561,9 @@
                 card.style.display = 'block';
                 btn.style.display = 'block';
                 
-                tg.HapticFeedback.notificationOccurred('success');
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
                 
                 try {
                     tg.sendData(JSON.stringify({
@@ -550,7 +578,9 @@
                         valid_until: validStr,
                         timestamp: new Date().toISOString()
                     }));
-                } catch(e) {}
+                } catch(e) {
+                    console.log('Could not send signal data');
+                }
             }, 2000);
         }
 
