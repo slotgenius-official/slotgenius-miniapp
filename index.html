@@ -7,93 +7,399 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%); color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh; padding: 20px; }
+        body { 
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%); 
+            color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
         .container { max-width: 480px; margin: 0 auto; }
-        .header { text-align: center; padding: 30px 0; }
-        .header h1 { font-size: 32px; background: linear-gradient(135deg, #9d00ff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        .lang-switch { position: fixed; top: 15px; right: 15px; z-index: 1000; }
-        .lang-btn { background: rgba(157,0,255,0.3); border: 1px solid rgba(157,0,255,0.5); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; backdrop-filter: blur(10px); }
-        .info-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(157,0,255,0.3); border-radius: 16px; padding: 25px; margin: 20px 0; }
+        .header { text-align: center; padding: 30px 0 20px; }
+        .header h1 { 
+            font-size: 32px; 
+            background: linear-gradient(135deg, #9d00ff, #ffd700); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            margin-bottom: 10px; 
+        }
+        .info-box { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(157,0,255,0.3); 
+            border-radius: 16px; 
+            padding: 25px; 
+            margin: 20px 0; 
+        }
         .info-box h2 { color: #ffd700; margin-bottom: 15px; font-size: 20px; }
         .info-box p { color: #aaa; line-height: 1.6; margin-bottom: 10px; }
-        .partner-link { background: linear-gradient(135deg, #9d00ff, #bd00ff); border-radius: 12px; padding: 20px; margin: 15px 0; text-decoration: none; color: white; display: block; transition: transform 0.2s; }
+        .partner-link { 
+            background: linear-gradient(135deg, #9d00ff, #bd00ff); 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin: 15px 0; 
+            text-decoration: none; 
+            color: white; 
+            display: block; 
+            transition: transform 0.2s; 
+        }
         .partner-link:active { transform: scale(0.98); }
         .partner-link .title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
         .partner-link .desc { font-size: 13px; opacity: 0.9; }
         .partner-link.xbet { background: linear-gradient(135deg, #1a237e, #283593); }
-        .steps { background: rgba(255,215,0,0.1); border-left: 4px solid #ffd700; padding: 15px; margin: 20px 0; border-radius: 8px; }
+        .steps { 
+            background: rgba(255,215,0,0.1); 
+            border-left: 4px solid #ffd700; 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+        }
         .steps h3 { color: #ffd700; margin-bottom: 10px; }
         .steps ol { padding-left: 20px; color: #ccc; }
         .steps li { margin: 8px 0; }
-        .btn { width: 100%; background: linear-gradient(135deg, #00ff88, #00cc6a); border: none; border-radius: 16px; padding: 18px; color: #000; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #00ff88, #00cc6a); 
+            border: none; 
+            border-radius: 16px; 
+            padding: 18px; 
+            color: #000; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
         .btn:active { opacity: 0.9; transform: scale(0.98); }
-        .signal-card { background: rgba(21,21,32,0.8); border-radius: 20px; padding: 25px; margin: 20px 0; }
-        .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .btn-play {
+            background: linear-gradient(135deg, #ff6600, #ff3300);
+            color: #fff;
+            animation: pulseBtn 2s infinite;
+        }
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+        }
+        
+        /* Сигналы */
+        .signal-card { 
+            background: rgba(21,21,32,0.8); 
+            border-radius: 20px; 
+            padding: 25px; 
+            margin: 20px 0; 
+            border: 2px solid transparent;
+        }
+        
+        /* HOT сигнал */
+        .signal-card.hot {
+            border-color: #ff6600;
+            box-shadow: 0 0 30px rgba(255,102,0,0.5), 0 0 60px rgba(255,102,0,0.3), inset 0 0 20px rgba(255,102,0,0.1);
+            animation: hotPulse 2s ease-in-out infinite;
+        }
+        @keyframes hotPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,102,0,0.5), 0 0 60px rgba(255,102,0,0.3); }
+            50% { box-shadow: 0 0 50px rgba(255,102,0,0.7), 0 0 80px rgba(255,102,0,0.5); }
+        }
+        
+        /* NORM сигнал */
+        .signal-card.norm {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+        
+        /* COLD сигнал */
+        .signal-card.cold {
+            border-color: #00ffff;
+            box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 0 60px rgba(0,255,255,0.3), inset 0 0 20px rgba(0,255,255,0.1);
+            animation: coldPulse 2s ease-in-out infinite;
+        }
+        @keyframes coldPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 0 60px rgba(0,255,255,0.3); }
+            50% { box-shadow: 0 0 50px rgba(0,255,255,0.7), 0 0 80px rgba(0,255,255,0.5); }
+        }
+        
+        .signal-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+        }
         .slot-name { font-size: 22px; font-weight: bold; color: #ffd700; }
         .slot-provider { font-size: 12px; color: #888; margin-top: 4px; }
-        .slot-status { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .slot-status { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: bold; 
+        }
         .slot-status.hot { background: linear-gradient(135deg, #ff6600, #ff3300); color: #fff; }
         .slot-status.norm { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         .slot-status.cold { background: linear-gradient(135deg, #00ffff, #00cccc); color: #000; }
-        .rtp-box { text-align: center; background: rgba(157,0,255,0.1); border-radius: 16px; padding: 20px; margin: 20px 0; }
+        
+        .rtp-box { 
+            text-align: center; 
+            background: rgba(157,0,255,0.1); 
+            border-radius: 16px; 
+            padding: 20px; 
+            margin: 20px 0; 
+        }
         .rtp-label { color: #888; font-size: 13px; margin-bottom: 8px; }
-        .rtp-value { font-size: 42px; font-weight: bold; background: linear-gradient(135deg, #9d00ff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .rtp-value { 
+            font-size: 42px; 
+            font-weight: bold; 
+            background: linear-gradient(135deg, #9d00ff, #ffd700); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
         .rtp-note { color: #666; font-size: 11px; margin-top: 8px; }
-        .details { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .detail-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; text-align: center; }
+        
+        .details { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+        .detail-item { 
+            background: rgba(255,255,255,0.03); 
+            border-radius: 12px; 
+            padding: 15px; 
+            text-align: center; 
+        }
         .detail-item .value { font-size: 18px; font-weight: bold; color: #00ff88; }
         .detail-item .label { font-size: 11px; color: #888; margin-top: 5px; }
-        .timer-box { background: rgba(255,102,0,0.1); border: 1px solid rgba(255,102,0,0.3); border-radius: 12px; padding: 15px; margin-top: 20px; text-align: center; }
+        
+        .timer-box { 
+            background: rgba(255,102,0,0.1); 
+            border: 1px solid rgba(255,102,0,0.3); 
+            border-radius: 12px; 
+            padding: 15px; 
+            margin-top: 20px; 
+            text-align: center; 
+        }
         .timer-label { color: #ff6600; font-size: 12px; margin-bottom: 8px; }
         .timer-value { font-size: 24px; font-weight: bold; color: #ff6600; }
         .timezone { font-size: 10px; color: #666; margin-top: 4px; }
+        
         .hidden { display: none !important; }
-        .disclaimer { text-align: center; color: #666; font-size: 11px; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; }
+        .disclaimer { 
+            text-align: center; 
+            color: #666; 
+            font-size: 11px; 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: rgba(255,255,255,0.02); 
+            border-radius: 12px; 
+        }
         .slot-icon { font-size: 40px; margin-right: 10px; }
+        
+        /* Загрузка */
+        .loader-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .loader-text {
+            color: #ffd700;
+            font-size: 18px;
+            margin-top: 20px;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(157,0,255,0.2);
+            border-top-color: #ffd700;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <div class="lang-switch"><button class="lang-btn" id="langBtn" onclick="toggleLanguage()">PT</button></div>
     <div class="container">
+        <!-- ЭКРАН РЕГИСТРАЦИИ -->
         <div id="registrationScreen">
-            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;">Analytics System</p></div>
-            <div class="info-box"><h2>Important!</h2><p>You need to register on a partner platform to get access to signals.</p><p>Our algorithms are tested on these platforms.</p></div>
-            <div class="steps"><h3>How to get access:</h3><ol><li>Register via link below</li><li>Deposit (min. 100RUB)</li><li>Come back and click "I registered"</li><li>Get signals and win!</li></ol></div>
-            <a href="https://lkhq.cc/1a8208f2" target="_blank" class="partner-link"><div class="title">🎰 1WIN - Recommended</div><div class="desc">⭐ Best compatibility - Instant payouts</div></a>
-            <a href="https://refpa27918.com/L?tag=s_4880605m_355c_10&site=4880605&ad=355&r=registration" target="_blank" class="partner-link xbet"><div class="title">⚽ 1xBet - Alternative</div><div class="desc">🌍 Wide selection - Reliable platform</div></a>
-            <button class="btn" id="registerBtn" onclick="markAsRegistered()">✅ I Registered</button>
-            <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;">⚠️ 18+ | Play responsibly</p>
-        </div>
-        <div id="mainScreen" class="hidden">
-            <div class="header"><h1>🎰 SlotGenius AI</h1><p style="color: #888;">Real-time RTP Monitoring</p></div>
-            <div class="signal-card" id="signalCard">
-                <div class="signal-header"><div style="display: flex; align-items: center;"><span class="slot-icon" id="slotIcon"></span><div><div class="slot-name" id="slotName"></div><div class="slot-provider" id="slotProvider"></div></div></div><div class="slot-status" id="slotStatus"></div></div>
-                <div class="rtp-box"><div class="rtp-label">RTP Today</div><div class="rtp-value" id="rtpValue"></div><div class="rtp-note">Platform average: 94.2%</div></div>
-                <div class="details"><div class="detail-item"><div class="value" id="bestTime"></div><div class="label">Best Time (MSK)</div></div><div class="detail-item"><div class="value" id="betSize"></div><div class="label">Recommended Bet</div></div><div class="detail-item"><div class="value" id="phase"></div><div class="label">Slot Phase</div></div><div class="detail-item"><div class="value" id="strategy"></div><div class="label">Strategy</div></div></div>
-                <div class="timer-box"><div class="timer-label">Signal valid until:</div><div class="timer-value" id="validUntil"></div><div class="timezone">Moscow Time (MSK)</div></div>
+            <div class="header">
+                <h1>🎰 SlotGenius AI</h1>
+                <p style="color: #888;">Система анализа игровых автоматов</p>
             </div>
-            <button class="btn" id="generateBtn" onclick="generateSignal()">🔮 Get New Signal</button>
-            <div class="disclaimer">RTP is calculated based on platform statistics. Not a guarantee of winnings. 18+</div>
-            <button class="btn" onclick="tg.close()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">❌ Close</button>
+            
+            <div class="info-box">
+                <h2>🔥 Важно!</h2>
+                <p>Для получения доступа к сигналам необходимо зарегистрироваться на одном из партнёрских проектов.</p>
+                <p>Наши алгоритмы протестированы именно на этих платформах.</p>
+            </div>
+            
+            <div class="steps">
+                <h3>📋 Как получить доступ:</h3>
+                <ol>
+                    <li>Зарегистрируйся по ссылке ниже</li>
+                    <li>Пополни баланс (мин. 100₽)</li>
+                    <li>Вернись и нажми "✅ Я зарегистрировался"</li>
+                    <li>Получай сигналы и выигрывай!</li>
+                </ol>
+            </div>
+            
+            <a href="https://lkhq.cc/1a8208f2" target="_blank" class="partner-link">
+                <div class="title">🎰 1WIN — Рекомендуем</div>
+                <div class="desc">⭐ Лучшая совместимость • Мгновенные выплаты</div>
+            </a>
+            
+            <a href="https://refpa27918.com/L?tag=s_4880605m_355c_10&site=4880605&ad=355&r=registration" target="_blank" class="partner-link xbet">
+                <div class="title">⚽ 1xBet — Альтернатива</div>
+                <div class="desc">🌍 Широкий выбор • Надёжная платформа</div>
+            </a>
+            
+            <button class="btn" id="registerBtn" onclick="markAsRegistered()">✅ Я зарегистрировался</button>
+            
+            <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;">⚠️ 18+ | Играйте ответственно</p>
+        </div>
+        
+        <!-- ЭКРАН ЗАГРУЗКИ -->
+        <div id="loadingScreen" class="hidden">
+            <div class="header">
+                <h1> SlotGenius AI</h1>
+            </div>
+            <div class="loader-container">
+                <div class="spinner"></div>
+                <div class="loader-text" id="loaderText">Анализирую слоты...</div>
+            </div>
+        </div>
+        
+        <!-- ОСНОВНОЙ ЭКРАН (сигналы) -->
+        <div id="mainScreen" class="hidden">
+            <div class="header">
+                <h1>🎰 SlotGenius AI</h1>
+                <p style="color: #888;">Мониторинг RTP в реальном времени</p>
+            </div>
+            
+            <div class="signal-card" id="signalCard">
+                <div class="signal-header">
+                    <div style="display: flex; align-items: center;">
+                        <span class="slot-icon" id="slotIcon">⚡</span>
+                        <div>
+                            <div class="slot-name" id="slotName">Gates of Olympus</div>
+                            <div class="slot-provider" id="slotProvider">Pragmatic Play</div>
+                        </div>
+                    </div>
+                    <div class="slot-status" id="slotStatus">HOT 🔥</div>
+                </div>
+                
+                <div class="rtp-box">
+                    <div class="rtp-label">RTP сегодня</div>
+                    <div class="rtp-value" id="rtpValue">96.4%</div>
+                    <div class="rtp-note">Средний по платформе: 94.2%</div>
+                </div>
+                
+                <div class="details">
+                    <div class="detail-item">
+                        <div class="value" id="bestTime">14:30</div>
+                        <div class="label">Лучшее время (МСК)</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="value" id="betSize">50₽</div>
+                        <div class="label">Рекомендуемая ставка</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="value" id="phase">Бонусная</div>
+                        <div class="label">Фаза слота</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="value" id="strategy">x2</div>
+                        <div class="label">Стратегия</div>
+                    </div>
+                </div>
+                
+                <div class="timer-box">
+                    <div class="timer-label">⏱️ Сигнал актуален до:</div>
+                    <div class="timer-value" id="validUntil">14:40</div>
+                    <div class="timezone">🕐 Время Московское (MSK)</div>
+                </div>
+            </div>
+            
+            <!-- КНОПКА ИГРАТЬ -->
+            <a href="https://lkhq.cc/1a8208f2" target="_blank" class="btn btn-play">
+                🎰 ИГРАТЬ СЕЙЧАС
+            </a>
+            
+            <button class="btn" id="generateBtn" onclick="generateSignal()" style="background: linear-gradient(135deg, #9d00ff, #bd00ff); color: #fff;">🔮 Обновить сигнал</button>
+            
+            <div class="disclaimer">
+                ⚠️ RTP рассчитывается на основе статистики платформы.<br>
+                Не является гарантией выигрыша. 18+<br>
+                Играйте ответственно.
+            </div>
+            
+            <button class="btn" onclick="tg.close()" style="background: linear-gradient(135deg, #666, #888); margin-top: 10px;">❌ Закрыть</button>
         </div>
     </div>
+
     <script>
         var tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        var currentLang = 'ru';
-        var userLang = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || 'ru';
-        if (userLang === 'pt' || userLang === 'pt-BR' || userLang === 'pt-PT') {
-            currentLang = 'pt';
-        }
-
         var slots = [
             { name: "Gates of Olympus", provider: "Pragmatic Play", icon: "⚡" },
             { name: "Sweet Bonanza", provider: "Pragmatic Play", icon: "🍭" },
             { name: "The Dog House", provider: "Pragmatic Play", icon: "🐶" },
+            { name: "The Dog House Megaways", provider: "Pragmatic Play", icon: "🐕" },
+            { name: "Sugar Rush", provider: "Pragmatic Play", icon: "🍬" },
+            { name: "Starlight Princess", provider: "Pragmatic Play", icon: "👸" },
+            { name: "Wild Wild Riches", provider: "Pragmatic Play", icon: "🌈" },
+            { name: "Fruit Party", provider: "Pragmatic Play", icon: "🍓" },
+            { name: "Pompeii Megareels", provider: "Pragmatic Play", icon: "🏛️" },
             { name: "Aviator", provider: "Spribe", icon: "✈️" },
-            { name: "Lucky Jet", provider: "1win Games", icon: "🚀" }
+            { name: "Lucky Jet", provider: "1win Games", icon: "🚀" },
+            { name: "Speed & Cash", provider: "1win Games", icon: "🏎️" },
+            { name: "Rocket Queen", provider: "1win Games", icon: "👑" },
+            { name: "Coin Strike", provider: "Playson", icon: "🪙" },
+            { name: "Hold and Win", provider: "Playson", icon: "💰" },
+            { name: "Solar King", provider: "Playson", icon: "☀️" },
+            { name: "Fruit Cocktail", provider: "Igrosoft", icon: "🍒" },
+            { name: "Crazy Monkey", provider: "Igrosoft", icon: "🐵" },
+            { name: "Crazy Monkey 2", provider: "Igrosoft", icon: "🦍" },
+            { name: "Book of Ra", provider: "Novomatic", icon: "📖" },
+            { name: "Book of Dead", provider: "Play'n GO", icon: "📜" },
+            { name: "Legacy of Dead", provider: "Play'n GO", icon: "🏺" },
+            { name: "Razor Shark", provider: "Push Gaming", icon: "🦈" },
+            { name: "Jammin' Jars", provider: "Push Gaming", icon: "🫙" },
+            { name: "Reactoonz", provider: "Play'n GO", icon: "👾" },
+            { name: "Moon Princess", provider: "Play'n GO", icon: "🌙" },
+            { name: "Wolf Gold", provider: "Pragmatic Play", icon: "🐺" },
+            { name: "John Hunter", provider: "Pragmatic Play", icon: "🎯" },
+            { name: "Big Bass Bonanza", provider: "Pragmatic Play", icon: "🎣" },
+            { name: "Floating Dragon", provider: "Pragmatic Play", icon: "🐉" },
+            { name: "Dragon Fortune", provider: "Playson", icon: "🐲" },
+            { name: "Royal Joker", provider: "Playson", icon: "🃏" },
+            { name: "Burning Wins", provider: "Playson", icon: "🔥" },
+            { name: "Power Coins", provider: "Playson", icon: "⚡" },
+            { name: "Midas Golden Touch", provider: "Thunderkick", icon: "👑" },
+            { name: "Pink Elephants", provider: "Thunderkick", icon: "🐘" },
+            { name: "Esqueleto Explosivo", provider: "Thunderkick", icon: "💀" },
+            { name: "Gonzo's Quest", provider: "NetEnt", icon: "🗿" },
+            { name: "Dead or Alive 2", provider: "NetEnt", icon: "🤠" },
+            { name: "Starburst", provider: "NetEnt", icon: "⭐" },
+            { name: "Divine Fortune", provider: "NetEnt", icon: "🏆" },
+            { name: "Immortal Romance", provider: "Microgaming", icon: "🧛" },
+            { name: "Thunderstruck 2", provider: "Microgaming", icon: "⚡" },
+            { name: "Mega Moolah", provider: "Microgaming", icon: "🦁" },
+            { name: "Buffalo Rising", provider: "Blueprint", icon: "🦬" },
+            { name: "Teddy Bear's Picnic", provider: "Blueprint", icon: "🧸" },
+            { name: "Fishin' Frenzy", provider: "Blueprint", icon: "🐟" },
+            { name: "Extra Chilli", provider: "Big Time Gaming", icon: "🌶️" },
+            { name: "Bonanza", provider: "Big Time Gaming", icon: "💎" },
+            { name: "Who Wants To Be Millionaire", provider: "Big Time Gaming", icon: "💰" }
         ];
 
         var statuses = [
@@ -102,25 +408,36 @@
             { text: "COLD ❄️", class: "cold", rtpMin: 92.0, rtpMax: 94.5 }
         ];
 
-        var phases = ["Bonus", "Accumulation", "Payout", "Calm", "Hot Phase"];
+        var phases = ["Бонусная", "Накопление", "Отдача", "Спокойная", "Горячая фаза"];
         var strategies = ["x2", "x3", "x5", "Risk", "Min Bet", "Max Bet"];
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'ru' ? 'pt' : 'ru';
-            document.getElementById('langBtn').textContent = currentLang === 'ru' ? '🇵 PT' : '🇺 RU';
-        }
 
         function markAsRegistered() {
             var btn = document.getElementById("registerBtn");
-            btn.innerHTML = "⏳ Checking...";
+            btn.innerHTML = "⏳ Проверка...";
             btn.disabled = true;
             
+            // Сразу показываем загрузку и генерируем сигнал
             setTimeout(function() {
                 document.getElementById("registrationScreen").classList.add("hidden");
-                document.getElementById("mainScreen").classList.remove("hidden");
-                alert("✅ Great!\n\nNow go back to the bot and press /start to get access to signals!");
-                generateSignal();
-            }, 1000);
+                document.getElementById("loadingScreen").classList.remove("hidden");
+                
+                // Имитация анализа (2 секунды)
+                var loaderText = document.getElementById("loaderText");
+                var texts = ["Анализирую слоты...", "Считаю RTP...", "Ищу паттерны...", "Генерирую сигнал..."];
+                var i = 0;
+                var interval = setInterval(function() {
+                    loaderText.textContent = texts[i];
+                    i++;
+                    if (i >= texts.length) {
+                        clearInterval(interval);
+                        // Показываем сигнал
+                        document.getElementById("loadingScreen").classList.add("hidden");
+                        document.getElementById("mainScreen").classList.remove("hidden");
+                        generateSignal();
+                    }
+                }, 500);
+                
+            }, 500);
         }
 
         function getMoscowTime() {
@@ -144,7 +461,14 @@
             card.style.display = 'none';
             btn.style.display = 'none';
             
+            // Показываем загрузку перед каждым сигналом
+            document.getElementById("loadingScreen").classList.remove("hidden");
+            var loaderText = document.getElementById("loaderText");
+            loaderText.textContent = "Обновляю данные...";
+            
             setTimeout(function() {
+                document.getElementById("loadingScreen").classList.add("hidden");
+                
                 var slot = slots[Math.floor(Math.random() * slots.length)];
                 var rand = Math.random();
                 var status;
@@ -153,7 +477,7 @@
                 else status = statuses[2];
                 
                 var rtp = (status.rtpMin + Math.random() * (status.rtpMax - status.rtpMin)).toFixed(1);
-                var bet = [20, 30, 50, 100, 150, 200][Math.floor(Math.random() * 6)];
+                var bet = [20, 30, 50, 100, 150, 200, 300, 500][Math.floor(Math.random() * 8)];
                 var phase = phases[Math.floor(Math.random() * phases.length)];
                 var strategy = strategies[Math.floor(Math.random() * strategies.length)];
                 
@@ -165,7 +489,7 @@
                 document.getElementById('slotProvider').textContent = slot.provider;
                 document.getElementById('rtpValue').textContent = rtp + '%';
                 document.getElementById('bestTime').textContent = formatTime(now);
-                document.getElementById('betSize').textContent = bet + ' RUB';
+                document.getElementById('betSize').textContent = bet + ' ₽';
                 document.getElementById('phase').textContent = phase;
                 document.getElementById('strategy').textContent = strategy;
                 document.getElementById('validUntil').textContent = formatTime(validTime);
@@ -173,6 +497,8 @@
                 var statusEl = document.getElementById('slotStatus');
                 statusEl.textContent = status.text;
                 statusEl.className = 'slot-status ' + status.class;
+                
+                card.className = 'signal-card ' + status.class;
                 
                 card.style.display = 'block';
                 btn.style.display = 'block';
